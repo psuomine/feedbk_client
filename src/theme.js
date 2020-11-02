@@ -21,6 +21,7 @@ const customTheme = {
     },
     bg: {
       gray: {
+        100: '#F9FAFB',
         700: '#374151',
         800: '#252F3F',
         900: '#161E2E',
@@ -29,6 +30,7 @@ const customTheme = {
     text: {
       gray: {
         300: '#D2D6DC',
+        600: '#6B7280',
       },
     },
   },
