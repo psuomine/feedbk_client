@@ -1,17 +1,11 @@
 import React from 'react'
-import { Button } from '@chakra-ui/core'
+import BaseButton from 'components/buttons/BaseButton'
 
-const PrimaryButton = ({ onClick, children }) => {
+const PrimaryButton = ({ onClick, children, ...rest }) => {
   return (
-    <Button
-      onClick={onClick}
-      fontWeight="normal"
-      size="sm"
-      colorScheme="brand"
-      px="4"
-    >
+    <BaseButton onClick={onClick} colorScheme="brand" {...rest}>
       {children}
-    </Button>
+    </BaseButton>
   )
 }
 
