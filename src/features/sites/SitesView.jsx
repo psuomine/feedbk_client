@@ -1,11 +1,8 @@
-import { useState } from 'react'
 import { Text, Box } from '@chakra-ui/core'
-import PrimaryButton from 'components/buttons/PrimaryButton'
 import Content from 'components/layout/Content'
-import Modal from 'components/modal/Modal'
+import AddSiteModal from 'features/sites/AddSiteModal'
 
 const SitesView = () => {
-  const [isOpen, setIsOpen] = useState(false)
   return (
     <>
       <Content>
@@ -13,12 +10,9 @@ const SitesView = () => {
           <Text fontSize="xl" fontWeight="500">
             Sites
           </Text>
-          <PrimaryButton onClick={() => setIsOpen(true)}>
-            Add new site
-          </PrimaryButton>
+          <AddSiteModal />
         </Box>
       </Content>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   )
 }

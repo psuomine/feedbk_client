@@ -1,60 +1,104 @@
-import React from 'react'
-import { PrimaryButton, SecondaryButton } from 'components/buttons'
+import * as React from 'react'
+import { SecondaryButton } from 'components/buttons'
 
 import {
   Modal as ChakraModal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
-  ModalBody,
+  ModalFooter as ChakraModalFooter,
+  ModalBody as ChakraModalBody,
   ModalCloseButton,
   Text,
   Box,
 } from '@chakra-ui/core'
-import TextInput from 'components/input/TextInput'
-import TextareaInput from 'components/input/TextareaInput'
 
-const Modal = ({ isOpen, onClose }) => {
-  console.log('ChakraModal', ChakraModal)
+const callAll = (...fns) => (...args) => fns.forEach((fn) => fn && fn(...args))
+
+const ModalContext = React.createContext()
+
+const Modal = (props) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  return <ModalContext.Provider value={[isOpen, setIsOpen]} {...props} />
+}
+
+const ModalDismissButton = ({ children }) => {
+  const [, setIsOpen] = React.useContext(ModalContext)
+
+  return React.cloneElement(children, {
+    onClick: callAll(() => setIsOpen(false), children.props.onClick),
+  })
+}
+
+const ModalOpenButton = ({ children }) => {
+  const [, setIsOpen] = React.useContext(ModalContext)
+
+  return React.cloneElement(children, {
+    onClick: callAll(() => setIsOpen(true), children.props.onClick),
+  })
+}
+
+const ModalContentsBase = (props) => {
+  const [isOpen, setIsOpen] = React.useContext(ModalContext)
+
   return (
     <ChakraModal
       initialFocusRef={null}
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => setIsOpen(false)}
       motionPreset="slideInBottom"
-    >
-      <ModalOverlay />
-      <ModalContent maxW="xl">
-        <ModalHeader px={6} pb={1} fontSize="lg">
-          New site
-        </ModalHeader>
-        <Box px={6}>
-          <Text fontSize="sm" lineHeight="short" color="text.gray.600">
-            Fill out the information below to get started
-          </Text>
-        </Box>
-        <ModalCloseButton top={6} right={6} />
-        <ModalBody px={6} mt={4}>
-          <TextInput name="siteName" label="Site name" value="" />
-          <Box mt={4}>
-            <TextareaInput
-              name="siteDescription"
-              label="Description"
-              value=""
-            />
-          </Box>
-        </ModalBody>
-
-        <ModalFooter backgroundColor="bg.gray.100" p={6}>
-          <SecondaryButton _first={{ mr: 6 }} onClick={onClose}>
-            Cancel
-          </SecondaryButton>
-          <PrimaryButton>Add this site</PrimaryButton>
-        </ModalFooter>
-      </ModalContent>
-    </ChakraModal>
+      {...props}
+    />
   )
 }
 
-export default Modal
+const ModalBody = ({ children }) => {
+  return (
+    <ChakraModalBody px={6} my={4}>
+      {children}
+    </ChakraModalBody>
+  )
+}
+
+const ModalFooter = ({ children }) => {
+  return (
+    <ChakraModalFooter backgroundColor="bg.gray.100" p={6}>
+      <ModalDismissButton>
+        <SecondaryButton _first={{ mr: 6 }}>Cancel</SecondaryButton>
+      </ModalDismissButton>
+      {children}
+    </ChakraModalFooter>
+  )
+}
+
+const ModalContents = ({ title, subtitle, children, ...props }) => {
+  return (
+    <ModalContentsBase {...props}>
+      <ModalOverlay />
+      <ModalContent maxW="xl">
+        <ModalHeader px={6} pb={1} fontSize="lg">
+          {title}
+        </ModalHeader>
+        <Box px={6}>
+          <Text fontSize="sm" lineHeight="short" color="text.gray.600">
+            {subtitle}
+          </Text>
+        </Box>
+        <ModalDismissButton>
+          <ModalCloseButton top={6} right={6} />
+        </ModalDismissButton>
+        {children}
+      </ModalContent>
+    </ModalContentsBase>
+  )
+}
+
+export {
+  Modal,
+  ModalDismissButton,
+  ModalOpenButton,
+  ModalContents,
+  ModalBody,
+  ModalFooter,
+}
