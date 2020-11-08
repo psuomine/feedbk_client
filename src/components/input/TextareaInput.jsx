@@ -11,7 +11,6 @@ const TextareaInput = ({ name, label, value, onChange, placeholder }) => {
         resize="none"
         borderRadius="6px"
         borderColor="border.default"
-        focusBorderColor="#266EBC"
         name={name}
         id={name}
         value={value}
@@ -19,6 +18,10 @@ const TextareaInput = ({ name, label, value, onChange, placeholder }) => {
         placeholder={placeholder}
         boxShadow="sm"
         size="lg"
+        _focus={{
+          borderColor: 'border.focus',
+          boxShadow: '0 0 0 1px #87ABD3',
+        }}
       />
     </FormControl>
   )

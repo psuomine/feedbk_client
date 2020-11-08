@@ -16,8 +16,14 @@ const customTheme = {
       500: '#5750ED',
       600: '#372FEA',
     },
+    error: {
+      100: '#FFFBFA',
+      300: '#E38F7D',
+      500: '#D12702',
+    },
     border: {
       default: '#D2D6DC',
+      focus: '#266EBC',
     },
     bg: {
       gray: {

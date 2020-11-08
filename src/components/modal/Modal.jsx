@@ -44,7 +44,6 @@ const ModalContentsBase = (props) => {
 
   return (
     <ChakraModal
-      initialFocusRef={null}
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
       motionPreset="slideInBottom"
@@ -86,7 +85,7 @@ const ModalContents = ({ title, subtitle, children, ...props }) => {
           </Text>
         </Box>
         <ModalDismissButton>
-          <ModalCloseButton top={6} right={6} />
+          <ModalCloseButton tabindex="-1" top={6} right={6} />
         </ModalDismissButton>
         {children}
       </ModalContent>
